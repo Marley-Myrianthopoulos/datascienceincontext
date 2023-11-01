@@ -1,0 +1,40 @@
+---
+title: "dsiclevel3"
+author: "Marley Myrianthopoulos"
+date: "2023-11-01"
+output: html_document
+---
+
+```{r}
+level3 <- function(week_number) {
+
+csv_pathway <- paste("/Users/marleymyrianthopoulos/Desktop/Attendance Presentation/Level 3/Week ", week_number, "/attendance_week_", week_number, ".csv", sep = "")
+  
+raw_data <- read.csv(csv_pathway)
+
+library(dplyr)
+
+modified_data <- raw_data %>%
+  group_by(StudentID, Date) %>% mutate(daily = sum(case_when(Attendance %in% c("P","T","S") ~ 1, T ~ 0))) %>% ungroup()
+
+late_students <- modified_data %>%
+  filter(Period == 2 & Attendance == "A" & daily >= 2) %>% group_by(StudentID) %>% mutate(missed2nd = length(StudentID)) %>% ungroup() %>%
+  select(StudentID, Name, GradeLevel, missed2nd) %>% distinct() %>% arrange(desc(missed2nd))
+
+days_missed <- modified_data %>%
+  filter(Period == 4 & daily < 2) %>% group_by(StudentID) %>% mutate(days_missed = length(StudentID)) %>% ungroup() %>%
+  select(StudentID, Name, GradeLevel, days_missed) %>% distinct() %>% arrange(desc(days_missed))
+
+perfect_attendance <- modified_data %>%
+  group_by(StudentID) %>% mutate(missed_periods = sum(case_when(!Attendance %in% c("P","T","S") ~ 1, T ~ 0))) %>% ungroup() %>%
+  filter(missed_periods == 0) %>% select(StudentID, Name, GradeLevel) %>% distinct() %>% arrange(GradeLevel)
+
+write_pathway <- paste("/Users/marleymyrianthopoulos/Desktop/Attendance Presentation/Level 3/Week ", week_number, sep = "")
+write.csv(late_students, file.path(write_pathway, "late_students.csv"), row.names = FALSE)
+write.csv(days_missed, file.path(write_pathway, "days_missed.csv"), row.names = FALSE)
+write.csv(perfect_attendance, file.path(write_pathway, "perfect_attendance.csv"), row.names = FALSE)
+
+}
+
+level3(_)
+```
