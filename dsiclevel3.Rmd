@@ -36,5 +36,5 @@ write.csv(perfect_attendance, file.path(write_pathway, "perfect_attendance.csv")
 
 }
 
-level3(_)
+level3(7)
 ```

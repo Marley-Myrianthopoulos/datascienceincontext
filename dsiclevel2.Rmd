@@ -6,7 +6,7 @@ output: html_document
 ---
 
 ```{r}
-raw_data <- read.csv("/Users/marleymyrianthopoulos/Desktop/Attendance Presentation/Level 2/Week _/attendance_week__.csv")
+raw_data <- read.csv("/Users/marleymyrianthopoulos/Desktop/Attendance Presentation/Level 2/Week 7/attendance_week_7.csv")
 
 library(dplyr)
 
@@ -25,9 +25,9 @@ perfect_attendance <- modified_data %>%
   group_by(StudentID) %>% mutate(missed_periods = sum(case_when(!Attendance %in% c("P","T","S") ~ 1, T ~ 0))) %>% ungroup() %>%
   filter(missed_periods == 0) %>% select(StudentID, Name, GradeLevel) %>% distinct() %>% arrange(GradeLevel)
 
-write.csv(late_students, "/Users/marleymyrianthopoulos/Desktop/Attendance Presentation/Level 2/Week _/late_students.csv", row.names = FALSE)
-write.csv(days_missed, "/Users/marleymyrianthopoulos/Desktop/Attendance Presentation/Level 2/Week _/days_missed.csv", row.names = FALSE)
-write.csv(perfect_attendance, "/Users/marleymyrianthopoulos/Desktop/Attendance Presentation/Level 2/Week _/perfect_attendance.csv", row.names = FALSE)
+write.csv(late_students, "/Users/marleymyrianthopoulos/Desktop/Attendance Presentation/Level 2/Week 7/late_students.csv", row.names = FALSE)
+write.csv(days_missed, "/Users/marleymyrianthopoulos/Desktop/Attendance Presentation/Level 2/Week 7/days_missed.csv", row.names = FALSE)
+write.csv(perfect_attendance, "/Users/marleymyrianthopoulos/Desktop/Attendance Presentation/Level 2/Week 7/perfect_attendance.csv", row.names = FALSE)
 ```
 
 
